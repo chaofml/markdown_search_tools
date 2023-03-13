@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}列表 {% endblock %}
+
+{# -------------------------- #}
+{% block css %} 
+<style type="text/css">
+</style> 
+{% endblock %}
+
+{# -------------------------- #}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h3>markdown</h3>
+    </div>
+    {% include "_search_form.html" %}
+
+<table class="table table-bordered table-hover table-striped">
+    <caption>文件列表：</caption>
+    <thead>
+       <tr>
+        <th>#</th>
+        <th>路径</th>
+        <th>Obsidian</th>
+       </tr>
+      </thead>
+      <tbody>
+        {% for item in paths %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><a href="/md?file={{ item }}">{{ item }}</a></td>
+          {% with obsidian = item|obsidian_url %}
+          <td><a class="btn btn-primary btn-xs" href="obsidian://open?vault={{ obsidian[0] }}&file={{ obsidian[1] }}">Obsidian</a></td>
+          {% endwith %}
+        </tr>
+        {% endfor %}
+      </tbody>
+</table>
+
+</div>
+{% endblock %}
+
+{# -------------------------- #}
+{% block js %}
+<script type="text/javascript">
+</script>
+{% endblock %}
+

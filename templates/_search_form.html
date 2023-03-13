@@ -1,0 +1,13 @@
+    <div class="row">
+    <form class="form-horizontal" action="/search" method="GET">
+      <div class="form-group">
+        <input type="hidden" value="{{ idx }}" name="idx">
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="words" placeholder="多个关键词用空格分隔（按行搜索）,全文用多次查找" name="words">
+        </div>
+        <div class="col-sm-2">
+          <button type="submit" class="btn btn-default">查找</button>
+        </div>
+      </div>
+    </form>
+    </div>

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{# -------------------------- #}
+{% block css %} 
+	<style type="text/css">
+            /*img{ width:100%;}*/
+	</style>
+
+    <!--highlight css js  -->
+    <link rel="stylesheet" href="/static/default.min.css">
+    <script src="/static/highlight.min.js"></script>
+
+{% endblock %}
+
+{# -------------------------- #}
+{% block body %}
+<div class="container">
+
+<div>
+  <ol class="breadcrumb">
+    {% for item in title|breadcrumb %}
+    {% if not loop.last %}
+    <li><a href="/?category={{ item.value }}">{{ item.name }}</a></li>
+    {% else %}
+    <li class="active">{{ item.name }}</li>
+    {% endif %}
+    {% endfor %}
+  </ol>
+</div>
+{% if ext == 'md' %}
+    {% with obsidian = title|obsidian_url %}
+         <div class="clearfix">
+             <div class="pull-right" style="height:30px;margin:5px 0;"><a class="btn btn-primary" href="obsidian://open?vault={{ obsidian[0] }}&file={{ obsidian[1] }}">Obsidian</a></div>
+         </div>
+    {% endwith %}
+    {% autoescape false %}
+        {{ content }}
+    {% endautoescape %}
+{% else %}
+    <pre>
+        <code class="language-{{ ext }}">
+        {{- content -}}
+        </code>
+    </pre>
+{% endif %}
+</div>
+{% endblock %}
+
+{# -------------------------- #}
+{% block js %}
+<script type="text/javascript">
+    hljs.highlightAll();
+</script>
+{% endblock %}
+

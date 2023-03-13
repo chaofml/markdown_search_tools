@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}查询结果 {% endblock %}
+
+{# -------------------------- #}
+{% block css %} 
+	<style type="text/css">
+	</style>
+{% endblock %}
+
+{# -------------------------- #}
+{% block body %}
+<div class="container">
+{% include "_search_form.html" %}
+<ul class="nav nav-tabs" id="mynav">
+  <li role="presentation" class="active"><a href="javascript:void(0);" onclick="show_table(this,'table_detail')">详情</a></li>
+  <li role="presentation"><a href="javascript:void(0);" onclick="show_table(this,'table_list')">文件列表</a></li>
+</ul>
+
+<table class="table table-bordered table-hover table-striped" id="table_detail">
+    <caption>查询结果：</caption>
+    <thead>
+       <tr>
+        <th>#</th>
+        <th>路径</th>
+        <th>内容</th>
+        <th>Obsidian</th>
+       </tr>
+      </thead>
+      <tbody>
+        {% for item in items  %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><a href="/md?file={{ item['path'] }}">{{ item['path'] }}</a></td>
+          <td>{{ item['content'] }}</td>
+          {% with obsidian = item['path']|obsidian_url %}
+          <td><a class="btn btn-primary btn-xs" href="obsidian://open?vault={{ obsidian[0] }}&file={{ obsidian[1] }}">Obsidian</a></td>
+          {% endwith %}
+        </tr>
+        {% endfor %}
+      </tbody>
+</table>
+
+<table class="table table-bordered table-hover table-striped" id="table_list" style="display:none;">
+    <caption>文件列表：</caption>
+    <thead>
+       <tr>
+        <th>#</th>
+        <th>路径</th>
+        <th>Obsidian</th>
+       </tr>
+      </thead>
+      <tbody>
+        {% for item in items|groupby('path')  %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><a href="/md?file={{ item.grouper }}">{{ item.grouper }}</a></td>
+          {% with obsidian = item.grouper|obsidian_url %}
+          <td><a class="btn btn-primary btn-xs" href="obsidian://open?vault={{ obsidian[0] }}&file={{ obsidian[1] }}">Obsidian</a></td>
+          {% endwith %}
+        </tr>
+        {% endfor %}
+      </tbody>
+</table>
+
+</div>
+{% endblock %}
+
+{# -------------------------- #}
+{% block js %}
+<script type="text/javascript">
+function show_table(me,id){
+    $('#mynav li').removeClass("active");
+    $(me).parent().addClass("active");
+
+    $('table').hide();
+    $('#'+id).show();
+}
+</script>
+{% endblock %}
+
